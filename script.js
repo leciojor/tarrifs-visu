@@ -96,7 +96,7 @@ async function fetchAllData() {
 
 async function fetchEconomicData() {
   try {
-    const response = await fetch("http://<your-ec2-public-ip>/api/economic", {
+    const response = await fetch("http://18.119.159.243/api/economic", {
       method: "GET",
       headers: { "Accept": "application/json" }
     });
@@ -118,7 +118,7 @@ async function fetchEconomicData() {
 async function fetchTariffData() {
     // will change endpoint logic in the future so it retrieves tarrifs in real time too
   try {
-    const response = await fetch("http://<your-ec2-public-ip>/api/tariff", {
+    const response = await fetch("http://18.119.159.243/api/tariff", {
       method: "GET",
       headers: { "Accept": "application/json" }
     });
