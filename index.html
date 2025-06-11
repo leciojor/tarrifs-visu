@@ -66,7 +66,7 @@
             </div>
             <div class="header-text">
                 <h1>US Trading Tariffs Impact Simulator</h1>
-                <p class="subtitle">Explore how changes in tariff rates affect the US economy and trade relationships</p>
+                <p class="subtitle">Explore how changes in tariff rates affect the US economy and trade relationships (economic data retrieved in real time from FRED api)</p>
             </div>
         </div>
     </header>
@@ -80,76 +80,59 @@
         <section class="dashboard">
             <div class="controls-panel">
                 <h2>Tariff Controls</h2>
-                <button class="controls-toggle">Adjust Tariff Settings</button>
-                <div class="controls-content">
-                    <div class="tariff-status">
-                        <p><strong>Current Tariff Rates</strong> (as of <span id="tariff-updated">Loading...</span>)</p>
-                    </div>
-                    
-                    <div class="control-group">
-                        <h3>China</h3>
-                        <div class="tariff-control">
-                            <label for="china-manufacturing">Manufacturing</label>
-                            <span class="value-display" id="china-manufacturing-value">25.0%</span>
-                            <div class="slider-container">
-                                <input type="range" id="china-manufacturing" min="0" max="50" value="25" step="0.1">
-                            </div>
-                        </div>
-                        <div class="tariff-control">
-                            <label for="china-electronics">Electronics</label>
-                            <span class="value-display" id="china-electronics-value">15.0%</span>
-                            <div class="slider-container">
-                                <input type="range" id="china-electronics" min="0" max="50" value="15" step="0.1">
-                            </div>
-                        </div>
-                        <div class="tariff-control">
-                            <label for="china-agriculture">Agriculture</label>
-                            <span class="value-display" id="china-agriculture-value">10.0%</span>
-                            <div class="slider-container">
-                                <input type="range" id="china-agriculture" min="0" max="50" value="10" step="0.1">
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="control-group">
-                        <h3>European Union</h3>
-                        <div class="tariff-control">
-                            <label for="eu-automotive">Automotive</label>
-                            <span class="value-display" id="eu-automotive-value">10.0%</span>
-                            <div class="slider-container">
-                                <input type="range" id="eu-automotive" min="0" max="50" value="10" step="0.1">
-                            </div>
-                        </div>
-                        <div class="tariff-control">
-                            <label for="eu-agriculture">Agriculture</label>
-                            <span class="value-display" id="eu-agriculture-value">8.0%</span>
-                            <div class="slider-container">
-                                <input type="range" id="eu-agriculture" min="0" max="50" value="8" step="0.1">
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="control-group">
-                        <h3>Canada & Mexico</h3>
-                        <div class="tariff-control">
-                            <label for="nafta-steel">Steel & Aluminum</label>
-                            <span class="value-display" id="nafta-steel-value">5.0%</span>
-                            <div class="slider-container">
-                                <input type="range" id="nafta-steel" min="0" max="50" value="5" step="0.1">
-                            </div>
-                        </div>
-                        <div class="tariff-control">
-                            <label for="nafta-agriculture">Agriculture</label>
-                            <span class="value-display" id="nafta-agriculture-value">2.0%</span>
-                            <div class="slider-container">
-                                <input type="range" id="nafta-agriculture" min="0" max="50" value="2" step="0.1">
-                            </div>
-                        </div>
-                    </div>
-
-                    <button id="reset-tariffs" class="btn">Reset to Default Tariffs</button>
-                    <button id="refresh-data" class="btn btn-secondary">Refresh All Data</button>
+                <div class="tariff-status">
+                    <p><strong>Current Tariff Rates</strong> (as of <span id="tariff-updated">Loading...</span>)</p>
                 </div>
+                
+                <div class="control-group">
+                    <h3>China</h3>
+                    <div class="tariff-control">
+                        <label for="china-manufacturing">Manufacturing</label>
+                        <span class="value-display" id="china-manufacturing-value">25.0%</span>
+                        <input type="range" id="china-manufacturing" min="0" max="50" value="25" step="0.1">
+                    </div>
+                    <div class="tariff-control">
+                        <label for="china-electronics">Electronics</label>
+                        <span class="value-display" id="china-electronics-value">15.0%</span>
+                        <input type="range" id="china-electronics" min="0" max="50" value="15" step="0.1">
+                    </div>
+                    <div class="tariff-control">
+                        <label for="china-agriculture">Agriculture</label>
+                        <span class="value-display" id="china-agriculture-value">10.0%</span>
+                        <input type="range" id="china-agriculture" min="0" max="50" value="10" step="0.1">
+                    </div>
+                </div>
+
+                <div class="control-group">
+                    <h3>European Union</h3>
+                    <div class="tariff-control">
+                        <label for="eu-automotive">Automotive</label>
+                        <span class="value-display" id="eu-automotive-value">10.0%</span>
+                        <input type="range" id="eu-automotive" min="0" max="50" value="10" step="0.1">
+                    </div>
+                    <div class="tariff-control">
+                        <label for="eu-agriculture">Agriculture</label>
+                        <span class="value-display" id="eu-agriculture-value">8.0%</span>
+                        <input type="range" id="eu-agriculture" min="0" max="50" value="8" step="0.1">
+                    </div>
+                </div>
+
+                <div class="control-group">
+                    <h3>Canada & Mexico</h3>
+                    <div class="tariff-control">
+                        <label for="nafta-steel">Steel & Aluminum</label>
+                        <span class="value-display" id="nafta-steel-value">5.0%</span>
+                        <input type="range" id="nafta-steel" min="0" max="50" value="5" step="0.1">
+                    </div>
+                    <div class="tariff-control">
+                        <label for="nafta-agriculture">Agriculture</label>
+                        <span class="value-display" id="nafta-agriculture-value">2.0%</span>
+                        <input type="range" id="nafta-agriculture" min="0" max="50" value="2" step="0.1">
+                    </div>
+                </div>
+
+                <button id="reset-tariffs" class="btn">Reset to Default Tariffs</button>
+                <button id="refresh-data" class="btn btn-secondary">Refresh All Data</button>
             </div>
 
             <div class="results-panel">
@@ -285,5 +268,7 @@
     </footer>
 
     <script src="script.js"></script>
+    
+
 </body>
 </html>
