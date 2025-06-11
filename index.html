@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>US Trading Tariffs Impact Simulator</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <h1>US Trading Tariffs Impact Simulator</h1>
+        <p class="subtitle">Explore how changes in tariff rates affect the US economy and trade relationships (tarrifs and economic data retrieved in real time)</p>
+    </header>
+
+    <main>
+        <div id="loading-overlay">
+            <div class="spinner"></div>
+            <p>Loading economic and tariff data...</p>
+        </div>
+        
+        <section class="dashboard">
+            <div class="controls-panel">
+                <h2>Tariff Controls</h2>
+                <div class="tariff-status">
+                    <p><strong>Current Tariff Rates</strong> (as of <span id="tariff-updated">Loading...</span>)</p>
+                </div>
+                
+                <div class="control-group">
+                    <h3>China</h3>
+                    <div class="tariff-control">
+                        <label for="china-manufacturing">Manufacturing</label>
+                        <span class="value-display" id="china-manufacturing-value">25.0%</span>
+                        <input type="range" id="china-manufacturing" min="0" max="50" value="25" step="0.1">
+                    </div>
+                    <div class="tariff-control">
+                        <label for="china-electronics">Electronics</label>
+                        <span class="value-display" id="china-electronics-value">15.0%</span>
+                        <input type="range" id="china-electronics" min="0" max="50" value="15" step="0.1">
+                    </div>
+                    <div class="tariff-control">
+                        <label for="china-agriculture">Agriculture</label>
+                        <span class="value-display" id="china-agriculture-value">10.0%</span>
+                        <input type="range" id="china-agriculture" min="0" max="50" value="10" step="0.1">
+                    </div>
+                </div>
+
+                <div class="control-group">
+                    <h3>European Union</h3>
+                    <div class="tariff-control">
+                        <label for="eu-automotive">Automotive</label>
+                        <span class="value-display" id="eu-automotive-value">10.0%</span>
+                        <input type="range" id="eu-automotive" min="0" max="50" value="10" step="0.1">
+                    </div>
+                    <div class="tariff-control">
+                        <label for="eu-agriculture">Agriculture</label>
+                        <span class="value-display" id="eu-agriculture-value">8.0%</span>
+                        <input type="range" id="eu-agriculture" min="0" max="50" value="8" step="0.1">
+                    </div>
+                </div>
+
+                <div class="control-group">
+                    <h3>Canada & Mexico</h3>
+                    <div class="tariff-control">
+                        <label for="nafta-steel">Steel & Aluminum</label>
+                        <span class="value-display" id="nafta-steel-value">5.0%</span>
+                        <input type="range" id="nafta-steel" min="0" max="50" value="5" step="0.1">
+                    </div>
+                    <div class="tariff-control">
+                        <label for="nafta-agriculture">Agriculture</label>
+                        <span class="value-display" id="nafta-agriculture-value">2.0%</span>
+                        <input type="range" id="nafta-agriculture" min="0" max="50" value="2" step="0.1">
+                    </div>
+                </div>
+
+                <button id="reset-tariffs" class="btn">Reset to Current Tariffs</button>
+                <button id="refresh-data" class="btn btn-secondary">Refresh All Data</button>
+            </div>
+
+            <div class="results-panel">
+                <div class="tabs">
+                    <button class="tab-btn active" data-tab="economic-impact">Economic Impact</button>
+                    <button class="tab-btn" data-tab="trade-balance">Trade Balance</button>
+                    <button class="tab-btn" data-tab="consumer-impact">Consumer Impact</button>
+                    <button class="tab-btn" data-tab="job-market">Job Market</button>
+                </div>
+
+                <div class="tab-content active" id="economic-impact">
+                    <h3>GDP Impact</h3>
+                    <div class="chart-container">
+                        <canvas id="gdp-chart"></canvas>
+                    </div>
+                    <div class="impact-summary">
+                        <div class="impact-card">
+                            <h4>Current GDP Growth</h4>
+                            <p class="impact-value" id="current-gdp">2.3%</p>
+                        </div>
+                        <div class="impact-card">
+                            <h4>Projected GDP Growth</h4>
+                            <p class="impact-value" id="projected-gdp">2.3%</p>
+                        </div>
+                        <div class="impact-card">
+                            <h4>Net Impact</h4>
+                            <p class="impact-value" id="gdp-impact">0.0%</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tab-content" id="trade-balance">
+                    <h3>Trade Balance</h3>
+                    <div class="chart-container">
+                        <canvas id="trade-chart"></canvas>
+                    </div>
+                    <div class="impact-summary">
+                        <div class="impact-card">
+                            <h4>Current Trade Deficit</h4>
+                            <p class="impact-value" id="current-deficit">$616B</p>
+                        </div>
+                        <div class="impact-card">
+                            <h4>Projected Trade Deficit</h4>
+                            <p class="impact-value" id="projected-deficit">$616B</p>
+                        </div>
+                        <div class="impact-card">
+                            <h4>Net Change</h4>
+                            <p class="impact-value" id="deficit-change">$0B</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tab-content" id="consumer-impact">
+                    <h3>Consumer Price Impact</h3>
+                    <div class="chart-container">
+                        <canvas id="price-chart"></canvas>
+                    </div>
+                    <div class="impact-summary">
+                        <div class="impact-card">
+                            <h4>Current Inflation</h4>
+                            <p class="impact-value" id="current-inflation">3.4%</p>
+                        </div>
+                        <div class="impact-card">
+                            <h4>Projected Inflation</h4>
+                            <p class="impact-value" id="projected-inflation">3.4%</p>
+                        </div>
+                        <div class="impact-card">
+                            <h4>Annual Cost to Average Household</h4>
+                            <p class="impact-value" id="household-cost">$0</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tab-content" id="job-market">
+                    <h3>Job Market Impact</h3>
+                    <div class="chart-container">
+                        <canvas id="jobs-chart"></canvas>
+                    </div>
+                    <div class="impact-summary">
+                        <div class="impact-card">
+                            <h4>Manufacturing Jobs</h4>
+                            <p class="impact-value" id="manufacturing-jobs">0</p>
+                        </div>
+                        <div class="impact-card">
+                            <h4>Service Sector Jobs</h4>
+                            <p class="impact-value" id="service-jobs">0</p>
+                        </div>
+                        <div class="impact-card">
+                            <h4>Net Job Impact</h4>
+                            <p class="impact-value" id="net-jobs">0</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="info-section">
+            <h2>Understanding Tariffs</h2>
+            <div class="info-grid">
+                <div class="info-card">
+                    <h3>What are Tariffs?</h3>
+                    <p>Tariffs are taxes imposed on imported goods and services. They are typically calculated as a percentage of the transaction price and can vary by product category and country of origin.</p>
+                </div>
+                <div class="info-card">
+                    <h3>Current US Tariff Policy</h3>
+                    <p>The US currently maintains various tariff rates on different products from different countries. Notable examples include tariffs on Chinese goods, European steel and aluminum, and certain agricultural products.</p>
+                </div>
+                <div class="info-card">
+                    <h3>Economic Effects</h3>
+                    <p>Tariffs can protect domestic industries but often lead to higher consumer prices, potential retaliation from trading partners, and complex ripple effects throughout the economy.</p>
+                </div>
+                <div class="info-card">
+                    <h3>About This Simulator</h3>
+                    <p>This simulator provides a simplified model of how tariff changes might affect various economic indicators. It is for educational purposes and does not represent a comprehensive economic forecast.</p>
+                    <p class="data-source">Economic data: <span id="data-source">Live economic data from API</span></p>
+                    <p class="data-updated">Last updated: <span id="data-updated">Loading...</span></p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+    <div class="footer-content">
+        <div class="footer-info">
+            <p>US Trading Tariffs Impact Simulator | Educational Tool</p>
+            <p>Data based on simplified economic models</p>
+        </div>
+        <div class="footer-attribution">
+            <p>Developed by <strong>Lecio Ribeiro</strong></p>
+            <p>Source code available at: <a href="https://github.com/leciojor/tarrifs-visu" target="_blank">github.com/leciojor/tarrifs-visu</a></p>
+        </div>
+    </div>
+</footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
