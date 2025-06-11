@@ -1,0 +1,83 @@
+name: Deploy application server on AWS instance
+
+on:
+  push:
+    branches:
+      - dev
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKER_HUB_USERNAME }}
+          password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
+
+      - name: Build and push Docker image for React app
+        run: |
+          docker build -t detectclient -f ./frontend/Dockerfile .
+          docker tag detectclient oracio/detectclient:latest
+          docker push oracio/detectclient:latest
+
+          docker build -t detectserver -f ./backend/Dockerfile .
+          docker tag detectserver oracio/detectserver:latest
+          docker push oracio/detectserver:latest
+
+
+      - name: Add runner IP to AWS Security Group
+        uses: sohelamin/aws-security-group-add-ip-action@master
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}
+          aws-security-group-id: ${{ secrets.AWS_SECURITY_GROUP_ID }}
+          port: '22'
+          to-port: '22'
+          protocol: 'tcp'
+          description: 'GitHub Action detectclient'
+      
+      - name: Deploy app to EC2
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.AWS_IP }}
+          username: ec2-user
+          key: ${{ secrets.EC2_SSH_PRIVATE_KEY }}
+          script: |
+            docker image prune -f
+
+            docker pull oracio/detectclient:latest
+            docker pull oracio/detectserver:latest
+
+            if [ "$(docker ps -aq -f name=detectclient-container)" ]; then
+              docker stop detectclient-container
+              docker rm detectclient-container
+            fi            
+
+            if [ "$(docker ps -aq -f name=detectserver-container)" ]; then
+              docker stop detectserver-container
+              docker rm detectserver-container
+            fi            
+
+
+            docker run -d \
+            --name detectserver-container \
+            --network detect-net \
+            -p 5000:5000 \
+            oracio/detectserver:latest
+
+            docker run -d \
+              --name detectclient-container \
+              --network detect-net \
+              -p 80:80 -p 443:443 \
+              -v caddy_data:/data \
+              -v caddy_config:/config \
+              oracio/detectclient:latest
