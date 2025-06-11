@@ -24,13 +24,9 @@ jobs:
 
       - name: Build and push Docker image for React app
         run: |
-          docker build -t detectclient -f ./frontend/Dockerfile .
-          docker tag detectclient oracio/detectclient:latest
-          docker push oracio/detectclient:latest
-
-          docker build -t detectserver -f ./backend/Dockerfile .
-          docker tag detectserver oracio/detectserver:latest
-          docker push oracio/detectserver:latest
+          docker build -t tarrifs -f ./backend/Dockerfile .
+          docker tag tarrifs oracio/tarrifs:latest
+          docker push oracio/tarrifs:latest
 
 
       - name: Add runner IP to AWS Security Group
@@ -43,7 +39,7 @@ jobs:
           port: '22'
           to-port: '22'
           protocol: 'tcp'
-          description: 'GitHub Action detectclient'
+          description: 'GitHub Action tarrifs'
       
       - name: Deploy app to EC2
         uses: appleboy/ssh-action@master
@@ -54,30 +50,14 @@ jobs:
           script: |
             docker image prune -f
 
-            docker pull oracio/detectclient:latest
-            docker pull oracio/detectserver:latest
+            docker pull oracio/tarrifs:latest
 
-            if [ "$(docker ps -aq -f name=detectclient-container)" ]; then
-              docker stop detectclient-container
-              docker rm detectclient-container
+            if [ "$(docker ps -aq -f name=tarrifs-container)" ]; then
+              docker stop tarrifs-container
+              docker rm tarrifs-container
             fi            
 
-            if [ "$(docker ps -aq -f name=detectserver-container)" ]; then
-              docker stop detectserver-container
-              docker rm detectserver-container
-            fi            
-
-
             docker run -d \
-            --name detectserver-container \
-            --network detect-net \
-            -p 5000:5000 \
-            oracio/detectserver:latest
-
-            docker run -d \
-              --name detectclient-container \
-              --network detect-net \
-              -p 80:80 -p 443:443 \
-              -v caddy_data:/data \
-              -v caddy_config:/config \
-              oracio/detectclient:latest
+            --name tarrifs-container \
+            -p 3000:3000 \
+            oracio/tarrifs:latest
