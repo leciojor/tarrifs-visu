@@ -336,18 +336,23 @@ function resetTariffs() {
 }
 
 function initCharts() {
-  initGDPChart()
-  initTradeChart()
-  initPriceChart()
-  initJobsChart()
+  requestAnimationFrame(() => {
+    initGDPChart()
+    initTradeChart()
+    initPriceChart()
+    initJobsChart()
+  })
 }
 
 function initGDPChart() {
   const canvas = document.getElementById("gdp-chart")
   const ctx = canvas.getContext("2d")
 
-  canvas.width = canvas.parentElement.clientWidth
-  canvas.height = canvas.parentElement.clientHeight
+  const parentWidth = canvas.parentElement.offsetWidth || 400
+  const parentHeight = canvas.parentElement.offsetHeight || 300
+
+  canvas.width = parentWidth > 0 ? parentWidth : 400
+  canvas.height = parentHeight > 0 ? parentHeight : 300
 
   window.gdpChart = {
     ctx: ctx,
@@ -365,8 +370,11 @@ function initTradeChart() {
   const canvas = document.getElementById("trade-chart")
   const ctx = canvas.getContext("2d")
 
-  canvas.width = canvas.parentElement.clientWidth
-  canvas.height = canvas.parentElement.clientHeight
+  const parentWidth = canvas.parentElement.offsetWidth || 400
+  const parentHeight = canvas.parentElement.offsetHeight || 300
+
+  canvas.width = parentWidth > 0 ? parentWidth : 400
+  canvas.height = parentHeight > 0 ? parentHeight : 300
 
   window.tradeChart = {
     ctx: ctx,
@@ -386,8 +394,11 @@ function initPriceChart() {
   const canvas = document.getElementById("price-chart")
   const ctx = canvas.getContext("2d")
 
-  canvas.width = canvas.parentElement.clientWidth
-  canvas.height = canvas.parentElement.clientHeight
+  const parentWidth = canvas.parentElement.offsetWidth || 400
+  const parentHeight = canvas.parentElement.offsetHeight || 300
+
+  canvas.width = parentWidth > 0 ? parentWidth : 400
+  canvas.height = parentHeight > 0 ? parentHeight : 300
 
   window.priceChart = {
     ctx: ctx,
@@ -406,8 +417,11 @@ function initJobsChart() {
   const canvas = document.getElementById("jobs-chart")
   const ctx = canvas.getContext("2d")
 
-  canvas.width = canvas.parentElement.clientWidth
-  canvas.height = canvas.parentElement.clientHeight
+  const parentWidth = canvas.parentElement.offsetWidth || 400
+  const parentHeight = canvas.parentElement.offsetHeight || 300
+
+  canvas.width = parentWidth > 0 ? parentWidth : 400
+  canvas.height = parentHeight > 0 ? parentHeight : 300
 
   window.jobsChart = {
     ctx: ctx,
@@ -421,6 +435,7 @@ function initJobsChart() {
 
   drawJobsChart()
 }
+
 
 function drawGDPChart() {
   const { ctx, canvas, data } = window.gdpChart
@@ -967,19 +982,33 @@ function calculateImpacts() {
   }
 }
 
+document.addEventListener('DOMContentLoaded', () => {
+  setTimeout(() => {
+    initCharts()
+  }, 50)
+})
+
 window.addEventListener("resize", () => {
-  const charts = ["gdp-chart", "trade-chart", "price-chart", "jobs-chart"]
+  clearTimeout(window.resizeTimeout)
+  window.resizeTimeout = setTimeout(() => {
+    const charts = ["gdp-chart", "trade-chart", "price-chart", "jobs-chart"]
 
-  charts.forEach((chartId) => {
-    const canvas = document.getElementById(chartId)
-    if (canvas) {
-      canvas.width = canvas.parentElement.clientWidth
-      canvas.height = canvas.parentElement.clientHeight
-    }
-  })
+    charts.forEach((chartId) => {
+      const canvas = document.getElementById(chartId)
+      if (canvas && canvas.parentElement) {
+        const parentWidth = canvas.parentElement.offsetWidth
+        const parentHeight = canvas.parentElement.offsetHeight
+        
+        if (parentWidth > 0 && parentHeight > 0) {
+          canvas.width = parentWidth
+          canvas.height = parentHeight
+        }
+      }
+    })
 
-  if (window.gdpChart) drawGDPChart()
-  if (window.tradeChart) drawTradeChart()
-  if (window.priceChart) drawPriceChart()
-  if (window.jobsChart) drawJobsChart()
+    if (window.gdpChart) drawGDPChart()
+    if (window.tradeChart) drawTradeChart()
+    if (window.priceChart) drawPriceChart()
+    if (window.jobsChart) drawJobsChart()
+  }, 100)
 })

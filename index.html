@@ -8,8 +8,67 @@
 </head>
 <body>
     <header>
-        <h1>US Trading Tariffs Impact Simulator</h1>
-        <p class="subtitle">Explore how changes in tariff rates affect the US economy and trade relationships (economic data retrieved in real time from FRED api)</p>
+        <div class="header-content">
+            <div class="logo">
+                <svg width="240" height="80" viewBox="0 0 300 100" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="50" cy="50" r="35" fill="#1e40af" stroke="#3b82f6" stroke-width="2"/>
+                    
+                    <rect x="20" y="30" width="60" height="3" fill="#dc2626"/>
+                    <rect x="20" y="36" width="60" height="3" fill="#dc2626"/>
+                    <rect x="20" y="42" width="60" height="3" fill="#dc2626"/>
+                    <rect x="20" y="48" width="60" height="3" fill="#dc2626"/>
+                    <rect x="20" y="54" width="60" height="3" fill="#dc2626"/>
+                    <rect x="20" y="60" width="60" height="3" fill="#dc2626"/>
+                    <rect x="20" y="66" width="60" height="3" fill="#dc2626"/>
+                    
+                    <rect x="20" y="33" width="60" height="3" fill="#ffffff"/>
+                    <rect x="20" y="39" width="60" height="3" fill="#ffffff"/>
+                    <rect x="20" y="45" width="60" height="3" fill="#ffffff"/>
+                    <rect x="20" y="51" width="60" height="3" fill="#ffffff"/>
+                    <rect x="20" y="57" width="60" height="3" fill="#ffffff"/>
+                    <rect x="20" y="63" width="60" height="3" fill="#ffffff"/>
+                    
+                    <rect x="20" y="30" width="25" height="21" fill="#1e40af"/>
+                    
+                    <g fill="white" font-family="Arial" font-size="4">
+                        <text x="23" y="35">★</text>
+                        <text x="28" y="35">★</text>
+                        <text x="33" y="35">★</text>
+                        <text x="38" y="35">★</text>
+                        <text x="25.5" y="39">★</text>
+                        <text x="30.5" y="39">★</text>
+                        <text x="35.5" y="39">★</text>
+                        <text x="23" y="43">★</text>
+                        <text x="28" y="43">★</text>
+                        <text x="33" y="43">★</text>
+                        <text x="38" y="43">★</text>
+                        <text x="25.5" y="47">★</text>
+                        <text x="30.5" y="47">★</text>
+                        <text x="35.5" y="47">★</text>
+                    </g>
+                    
+                    <path d="M 75 35 L 85 40 L 75 45 Z" fill="#059669" opacity="0.8"/>
+                    <path d="M 85 55 L 75 60 L 85 65 Z" fill="#dc2626" opacity="0.8"/>
+                    
+                    <polyline points="20,75 30,70 40,65 50,68 60,72 70,75" fill="none" stroke="#fbbf24" stroke-width="2"/>
+                    <polyline points="20,80 30,78 40,75 50,77 60,82 70,85" fill="none" stroke="#10b981" stroke-width="2"/>
+                    
+                    <text x="100" y="25" font-family="Arial, sans-serif" font-size="18" font-weight="bold" fill="#1f2937">US Trading Tariffs</text>
+                    <text x="100" y="45" font-family="Arial, sans-serif" font-size="18" font-weight="bold" fill="#1f2937">Impact Simulator</text>
+                    
+                    <text x="100" y="65" font-family="Arial, sans-serif" font-size="12" fill="#6b7280" opacity="0.8">Analyze • Simulate • Decide</text>
+                    
+                    <rect x="100" y="75" width="3" height="8" fill="#3b82f6"/>
+                    <rect x="105" y="70" width="3" height="13" fill="#10b981"/>
+                    <rect x="110" y="77" width="3" height="6" fill="#f59e0b"/>
+                    <rect x="115" y="72" width="3" height="11" fill="#ef4444"/>
+                </svg>
+            </div>
+            <div class="header-text">
+                <h1>US Trading Tariffs Impact Simulator</h1>
+                <p class="subtitle">Explore how changes in tariff rates affect the US economy and trade relationships (economic data retrieved in real time from FRED api)</p>
+            </div>
+        </div>
     </header>
 
     <main>
@@ -72,7 +131,7 @@
                     </div>
                 </div>
 
-                <button id="reset-tariffs" class="btn">Reset to Current Tariffs</button>
+                <button id="reset-tariffs" class="btn">Reset to Default Tariffs</button>
                 <button id="refresh-data" class="btn btn-secondary">Refresh All Data</button>
             </div>
 
@@ -196,18 +255,20 @@
     </main>
 
     <footer>
-    <div class="footer-content">
-        <div class="footer-info">
-            <p>US Trading Tariffs Impact Simulator | Educational Tool</p>
-            <p>Data based on simplified economic models and tarrifs are random</p>
+        <div class="footer-content">
+            <div class="footer-info">
+                <p>US Trading Tariffs Impact Simulator | Educational Tool</p>
+                <p>Data based on simplified economic models and tarrifs initialize randomly</p>
+            </div>
+            <div class="footer-attribution">
+                <p>Developed by <strong>Lecio Ribeiro</strong></p>
+                <p>Source code available at: <a href="https://github.com/leciojor/tarrifs-visu" target="_blank">github.com/leciojor/tarrifs-visu</a></p>
+            </div>
         </div>
-        <div class="footer-attribution">
-            <p>Developed by <strong>Lecio Ribeiro</strong></p>
-            <p>Source code available at: <a href="https://github.com/leciojor/tarrifs-visu" target="_blank">github.com/leciojor/tarrifs-visu</a></p>
-        </div>
-    </div>
-</footer>
+    </footer>
 
     <script src="script.js"></script>
+    
+
 </body>
 </html>

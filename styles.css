@@ -30,7 +30,65 @@ header {
   background-color: var(--primary-color);
   color: white;
   padding: 2rem;
-  text-align: center;
+}
+
+.header-content {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  flex-wrap: wrap;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.logo {
+  flex-shrink: 0;
+}
+
+.logo svg {
+  max-width: 100%;
+  height: auto;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
+}
+
+.header-text {
+  flex: 1;
+  min-width: 300px;
+}
+
+.header-text h1 {
+  margin: 0 0 10px 0;
+  font-size: 2.5rem;
+}
+
+.header-text .subtitle {
+  margin: 0;
+  font-size: 1.1rem;
+  opacity: 0.9;
+}
+
+@media (max-width: 768px) {
+  .header-content {
+    flex-direction: column;
+    text-align: center;
+  }
+  
+  .logo svg {
+    width: 200px;
+    height: 65px;
+  }
+  
+  .header-text {
+    min-width: auto;
+  }
+  
+  .header-text h1 {
+    font-size: 2rem;
+  }
+  
+  .header-text .subtitle {
+    font-size: 1rem;
+  }
 }
 
 h1 {
@@ -203,9 +261,16 @@ input[type="range"]::-webkit-slider-thumb:hover {
   display: block;
 }
 
+.chart-container canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
 .chart-container {
   height: 300px;
-  margin-bottom: 1.5rem;
+  width: 100%;
+  min-height: 300px;
   position: relative;
   background-color: #fff;
   border-radius: var(--border-radius);
@@ -297,21 +362,6 @@ footer p {
   color: var(--neutral-color);
 }
 
-@media (max-width: 768px) {
-  .impact-summary {
-    grid-template-columns: 1fr;
-  }
-
-  .tabs {
-    flex-wrap: wrap;
-  }
-
-  .tab-btn {
-    flex: 1 0 50%;
-    text-align: center;
-  }
-}
-
 .footer-content {
   display: flex;
   justify-content: space-between;
@@ -339,21 +389,6 @@ footer p {
 .footer-attribution a:hover {
   color: white;
   text-decoration: underline;
-}
-
-@media (max-width: 768px) {
-  .footer-content {
-    flex-direction: column;
-  }
-
-  .footer-attribution {
-    text-align: center;
-    margin-top: 1rem;
-  }
-
-  .footer-info {
-    text-align: center;
-  }
 }
 
 #loading-overlay {
@@ -387,5 +422,33 @@ footer p {
   }
   100% {
     transform: rotate(360deg);
+  }
+}
+
+@media (max-width: 768px) {
+  .impact-summary {
+    grid-template-columns: 1fr;
+  }
+
+  .tabs {
+    flex-wrap: wrap;
+  }
+
+  .tab-btn {
+    flex: 1 0 50%;
+    text-align: center;
+  }
+  
+  .footer-content {
+    flex-direction: column;
+  }
+
+  .footer-attribution {
+    text-align: center;
+    margin-top: 1rem;
+  }
+
+  .footer-info {
+    text-align: center;
   }
 }
