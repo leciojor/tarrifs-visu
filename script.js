@@ -69,108 +69,71 @@ function hideLoading() {
 }
 
 async function fetchAllData() {
-  showLoading()
+  showLoading();
 
   try {
     const [economicData, tariffData] = await Promise.all([
       fetchEconomicData(),
       fetchTariffData()
-    ])
+    ]);
 
-    updateBaselineData(economicData)
-    updateTariffData(tariffData)
-    updateDataSourceInfo(economicData.source || tariffData.source, new Date())
+    updateBaselineData(economicData);
+    updateTariffData(tariffData);
+    updateDataSourceInfo(economicData.source || tariffData.source, new Date());
 
     if (window.gdpChart) {
-      calculateImpacts()
+      calculateImpacts();
     }
 
-    hideLoading()
-    return { economicData, tariffData }
+    hideLoading();
+    return { economicData, tariffData };
   } catch (error) {
-    console.error("Error fetching data:", error)
-    hideLoading()
-    throw error
+    console.error("Error fetching data:", error);
+    hideLoading();
+    throw error;
   }
 }
 
 async function fetchEconomicData() {
   try {
-    const response = await fetch(
-    );
+    const response = await fetch("http://<your-ec2-public-ip>/api/economic", {
+      method: "GET",
+      headers: { "Accept": "application/json" }
+    });
 
     if (!response.ok) {
-      throw new Error(`Economic API responded with status: ${response.status}`)
+      throw new Error(`Economic API responded with status: ${response.status}`);
     }
 
-    const data = await response.json()
-    const gdpGrowth = data.find(item => item.Category === "GDP Growth Rate")?.LatestValue;
-    const gdpValue = data.find(item => item.Category === "GDP")?.LatestValue;
-    const inflation = data.find(item => item.Category === "Inflation Rate")?.LatestValue;
-    const spending = data.find(item => item.Category === "Consumer Spending")?.LatestValue;
-    const unemployment = data.find(item => item.Category === "Unemployment Rate")?.LatestValue;
-    const exports = data.find(item => item.Category === "Exports")?.LatestValue;
-    const imports = data.find(item => item.Category === "Imports")?.LatestValue;
-    const tradeDeficit = exports && imports ? imports - exports : null;
+    const data = await response.json();
 
-    return {
-      source: "TradingEconomics",
-      gdp: { growth: gdpGrowth, value: gdpValue },
-      trade: { deficit: tradeDeficit, exports, imports },
-      consumer: { inflation, householdSpending: spending },
-      jobs: { manufacturing: unemployment, service: unemployment }
-    };
+    return data;
 
   } catch (error) {
-    console.warn("Economic API unavailable, using simulated data")
-    return generateSimulatedEconomicData()
+    console.warn("Economic API unavailable, using simulated data");
+    return generateSimulatedEconomicData();
   }
 }
 
-function getTodayDate() {
-  const today = new Date();
-  const yyyy = today.getFullYear();
-  const mm = String(today.getMonth() + 1).padStart(2, '0');
-  const dd = String(today.getDate()).padStart(2, '0');
-  return `${yyyy}-${mm}-${dd}`;
-}
-
-
 async function fetchTariffData() {
+    // will change endpoint logic in the future so it retrieves tarrifs in real time too
   try {
-    const today = getTodayDate();
-    const url = `https://dataweb.usitc.gov/api/tariff?country=USA&date=${today}`;
-    const response = await fetch(url, {
-      method: 'GET',
-      headers: { 'Accept': 'application/json' }
+    const response = await fetch("http://<your-ec2-public-ip>/api/tariff", {
+      method: "GET",
+      headers: { "Accept": "application/json" }
     });
 
-
     if (!response.ok) {
-      throw new Error(`Tariff API responded with status: ${response.status}`)
+      throw new Error(`Tariff API responded with status: ${response.status}`);
     }
 
-    const data = await response.json()
-    return {
-      source: "USITC",
-      china: {
-        manufacturing: data.china?.manufacturing || 10,
-        electronics: data.china?.electronics || 12,
-        agriculture: data.china?.agriculture || 8
-      },
-      eu: {
-        automotive: data.eu?.automotive || 5,
-        agriculture: data.eu?.agriculture || 6
-      },
-      nafta: {
-        steel: data.nafta?.steel || 3,
-        agriculture: data.nafta?.agriculture || 4
-      }
-    };
+    const data = await response.json();
+
+    return data;
 
   } catch (error) {
-    console.warn("Tariff API unavailable, using simulated data")
-    return generateSimulatedTariffData()
+    console.warn("Tariff API unavailable, using simulated data");
+    return generateSimulatedTariffData();
   }
 }
 
